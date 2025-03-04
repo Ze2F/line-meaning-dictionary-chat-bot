@@ -1,0 +1,13 @@
+name = "line-dictionary-bot"
+main = "src/worker.js"
+compatibility_date = "2025-03-04"
+workers_dev = true
+preview_urls = false
+
+[observability]
+enabled = false
+
+  [observability.logs]
+  enabled = true
+  head_sampling_rate = 1
+  invocation_logs = true
