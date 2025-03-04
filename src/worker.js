@@ -1,18 +1,31 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run "npm run dev" in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run "npm run deploy" to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
-
-
 export default {
   async fetch(request, env, ctx) {
-    console.log(request.body);
-    // fetch(`https://api-data.line.me/v2/bot/message/${messageId}/content`)
-    return new Response('Hello World!');
+    const lineData = await request.json();
+    const messageType = lineData.events[0].message.type;
+    const messageText = lineData.events[0].message.text;
+    const replyToken = lineData.events[0].replyToken;
+
+    let reply = {
+      replyToken: replyToken,
+      messages: []
+    };
+
+    const dictionaryAPIResponse = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en_US/${messageText}`);
+    const dictionaryData = await dictionaryAPIResponse.json();
+    for (const meaning of dictionaryData[0].meanings) {
+      reply.messages.push({
+        type: 'text',
+        text: `${meaning.partOfSpeech}: ${meaning.definitions[0].definition}`
+      });
+    }
+
+    return await fetch('https://api.line.me/v2/bot/message/reply', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${env['line-token']}`
+      },
+      body: JSON.stringify(reply)
+    });
   },
 };

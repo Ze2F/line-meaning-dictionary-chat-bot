@@ -1,11 +1,12 @@
 {
-	"name": "line-dictionary-bot",
+	"name": "line-meaning-dictionary-chat-bot",
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
 		"deploy": "wrangler deploy",
 		"dev": "wrangler dev",
-		"start": "wrangler dev"
+		"start": "wrangler dev",
+		"log": "wrangler tail"
 	},
 	"devDependencies": {
 		"wrangler": "^3.112.0"

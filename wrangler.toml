@@ -1,4 +1,4 @@
-name = "line-dictionary-bot"
+name = "line-meaning-dictionary-chat-bot"
 main = "src/worker.js"
 compatibility_date = "2025-03-04"
 workers_dev = true
